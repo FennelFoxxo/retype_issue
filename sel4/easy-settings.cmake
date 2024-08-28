@@ -1,0 +1,1 @@
+projects/Fennec/easy-settings.cmake
