@@ -11,10 +11,17 @@ GRUB_D = grub/
 BUILD_D = build/
 TEMP_D = $(BUILD_D)/temp
 ESP_ROOT_D = $(TEMP_D)/esp_root
+SEL4_PROJECT_SRC_D = $(SEL4_D)/projects/Fennec/src/
 
-.PHONY: all clean
+#SEL4_PROJECT_FILES = $(wildcard $(SEL4_PROJECT_SRC_D)/*.*)
+SEL4_PROJECT_FILES = $(shell find $(SEL4_PROJECT_SRC_D) -name "*.*")
+
+.PHONY: all clean test
 
 all: | $(BUILD_D)/disk.img
+
+test:
+	echo $(SEL4_PROJECT_FILES)
 
 
 # Make final image
@@ -46,7 +53,7 @@ $(SEL4_D)/build/build.ninja:
 $(SEL4_D)/build/images/$(SEL4_KERNEL): $(SEL4_D)/build/build.ninja
 	cd $(SEL4_D)/build/ && ninja
 
-$(SEL4_D)/build/images/$(SEL4_ROOTSERVER): $(SEL4_D)/build/build.ninja
+$(SEL4_D)/build/images/$(SEL4_ROOTSERVER): $(SEL4_D)/build/build.ninja $(SEL4_PROJECT_FILES)
 	cd $(SEL4_D)/build/ && ninja
 
 

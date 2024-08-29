@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 3.7.2)
 
-
 # declare the hello-world CMake project and the languages it is written in (just C)
-project(Fennec C ASM)
+project(Fennec C CXX ASM)
 
 include(settings.cmake)
 
@@ -24,7 +23,18 @@ util_libs_import_libraries()
 sel4_libs_import_libraries()
 
 # Name the executable and list source files required to build it
-add_executable(Fennec src/main.c)
+add_executable(Fennec
+	src/main.cpp
+	src/globals/globals.cpp
+	src/memory/allocator/setup.cpp
+	src/memory/allocator/thread.cpp
+	src/memory/mapper/setup.cpp
+	src/memory/mapper/thread.cpp
+)
+
+target_include_directories(Fennec PRIVATE src)
+
+target_compile_options(Fennec PRIVATE -O0)
 
 # List of libraries to link with the application.
 #target_link_libraries(Fennec muslc sel4muslcsys)
