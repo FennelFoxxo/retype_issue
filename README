@@ -5,3 +5,6 @@ Once downloaded, run `make` in the root project folder. The final image will wri
 HOW TO USE
 Use `make run` to run as a UEFI image on QEMU
 Use `make simulate` to run the default ./simulate folder in the seL4 build folder
+
+Note: yes, I've included two precompiled files in here, BOOTX64.EFI (GRUB bootloader) and OVMF_CODE.fd - the only reason why is because I can't include the GRUB git add a submodule because gnu.org is currently down (lol) and the EDK2 project to compile OVMF_CODE.fd is huge
+I did just download and compile the bootloader EFI a week ago however. The OVMF_CODE.fd was obtained from the most recent build from the kraxel repo referenced by this page https://github.com/tianocore/tianocore.github.io/wiki/OVMF
