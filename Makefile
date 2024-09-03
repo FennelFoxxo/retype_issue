@@ -22,7 +22,7 @@ all: | $(BUILD_D)/disk.img
 
 
 run: $(BUILD_D)/disk.img
-	$(QEMU_BIN) -cpu Nehalem,-vme,-pdpe1gb,-xsave,-xsaveopt,-xsavec,-fsgsbase,-invpcid,+syscall,+lm,enforce -nographic -serial mon:stdio -m size=3G -drive if=pflash,format=raw,readonly=on,file=OVMF_CODE.fd -drive file=build/disk.img
+	$(QEMU_BIN) -cpu Nehalem,-vme,-pdpe1gb,-xsave,-xsaveopt,-xsavec,-fsgsbase,-invpcid,+syscall,+lm,enforce -nographic -serial mon:stdio -m size=3G -drive if=pflash,format=raw,readonly=on,file=OVMF_CODE.fd -drive format=raw,file=build/disk.img
 
 simulate: $(BUILD_D)/disk.img
 	cd $(SEL4_D)/build/ && ./simulate
