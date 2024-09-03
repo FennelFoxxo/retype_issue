@@ -16,7 +16,3 @@
 [submodule "sel4/projects/sel4runtime"]
 	path = sel4/projects/sel4runtime
 	url = https://github.com/seL4/sel4runtime.git
-[submodule "grub"]
-	path = grub
-	url = https://git.savannah.gnu.org/git/grub.git
-	ignore = dirty
