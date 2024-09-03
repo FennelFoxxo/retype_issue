@@ -1,12 +1,10 @@
 cmake_minimum_required(VERSION 3.7.2)
 
-# declare the hello-world CMake project and the languages it is written in (just C)
-project(Fennec C CXX ASM)
+project(myproject C ASM)
 
 include(settings.cmake)
 
-# In future tutorials, these setup steps will be replaced with
-# sel4_tutorials_setup_roottask_tutorial_environment()
+
 find_package(seL4 REQUIRED)
 find_package(elfloader-tool REQUIRED)
 find_package(musllibc REQUIRED)
@@ -23,29 +21,20 @@ util_libs_import_libraries()
 sel4_libs_import_libraries()
 
 # Name the executable and list source files required to build it
-add_executable(Fennec
-	src/main.cpp
-	src/globals/globals.cpp
-	src/memory/allocator/setup.cpp
-	src/memory/allocator/thread.cpp
-	src/memory/mapper/setup.cpp
-	src/memory/mapper/thread.cpp
+add_executable(myproject
+	src/main.c
 )
 
-target_include_directories(Fennec PRIVATE src)
-
-target_compile_options(Fennec PRIVATE -O0)
-
 # List of libraries to link with the application.
-#target_link_libraries(Fennec muslc sel4muslcsys)
-target_link_libraries(Fennec
+
+target_link_libraries(myproject
     sel4runtime sel4
     muslc utils
     sel4muslcsys sel4platsupport sel4utils sel4debug)
 
 # Tell the build system that this application is the root task. 
 include(rootserver)
-DeclareRootserver(Fennec)
+DeclareRootserver(myproject)
 
 if(SIMULATION)
     include(simulation)

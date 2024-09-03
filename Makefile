@@ -2,8 +2,9 @@ FAT_PART_SIZE_MB = 40
 MIN_ROOTSERVER_SIZE_MB = 1
 
 SEL4_KERNEL = kernel-x86_64-pc99
-SEL4_ROOTSERVER = Fennec-image-x86_64-pc99
+SEL4_ROOTSERVER = myproject-image-x86_64-pc99
 GRUB_CFG = grub.cfg
+QEMU_BIN = qemu-system-x86_64
 
 SEL4_D = sel4/
 GRUB_D = grub/
@@ -11,18 +12,17 @@ GRUB_D = grub/
 BUILD_D = build/
 TEMP_D = $(BUILD_D)/temp
 ESP_ROOT_D = $(TEMP_D)/esp_root
-SEL4_PROJECT_SRC_D = $(SEL4_D)/projects/Fennec/src/
+SEL4_PROJECT_SRC_D = $(SEL4_D)/projects/myproject/src/
 
-#SEL4_PROJECT_FILES = $(wildcard $(SEL4_PROJECT_SRC_D)/*.*)
 SEL4_PROJECT_FILES = $(shell find $(SEL4_PROJECT_SRC_D) -name "*.*")
 
-.PHONY: all clean test
+.PHONY: all clean run
 
 all: | $(BUILD_D)/disk.img
 
-test:
-	echo $(SEL4_PROJECT_FILES)
 
+run: $(BUILD_D)/disk.img
+	$(QEMU_BIN) -cpu Nehalem,-vme,-pdpe1gb,-xsave,-xsaveopt,-xsavec,-fsgsbase,-invpcid,+syscall,+lm,enforce -nographic -serial mon:stdio -m size=3G -drive if=pflash,format=raw,readonly=on,file=OVMF_CODE.fd -drive file=build/disk.img
 
 # Make final image
 $(BUILD_D)/disk.img: $(TEMP_D)/esp.img
