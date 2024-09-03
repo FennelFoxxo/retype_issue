@@ -38,12 +38,6 @@ $(TEMP_D)/esp.img: $(ESP_ROOT_D)/EFI/BOOT/BOOTX64.EFI $(ESP_ROOT_D)/boot/sel4ker
 	mkfs.vfat -F 32 -n "EFI SYSTEM" $@
 	mcopy -i $@ -s $(ESP_ROOT_D)/* ::
 
-# Create EFI boot file
-$(ESP_ROOT_D)/EFI/BOOT/BOOTX64.EFI: $(GRUB_D)/grub-mkimage
-	mkdir -p $(@D)
-	$(GRUB_D)/grub-mkimage -d $(GRUB_D)/grub-core -o $@ -O x86_64-efi -p "" configfile fat part_gpt gzio multiboot reboot cpuid echo sleep video video_bochs video_cirrus efi_gop efi_uga normal chain boot multiboot2
-
-
 # sel4 compilation
 
 $(SEL4_D)/build/build.ninja:
@@ -57,18 +51,16 @@ $(SEL4_D)/build/images/$(SEL4_ROOTSERVER): $(SEL4_D)/build/build.ninja $(SEL4_PR
 	cd $(SEL4_D)/build/ && ninja
 
 
-# Grub compilation
-
-$(GRUB_D)/grub-mkimage:
-	cd $(GRUB_D) && ./bootstrap && ./configure --target=x86_64 --with-platform=efi && make
-
-
 # Copy files to final locations
 
 $(ESP_ROOT_D)/EFI/BOOT/grub.cfg: $(GRUB_CFG)
 	cp $< $@
 
 $(ESP_ROOT_D)/boot/sel4kernel: $(SEL4_D)/build/images/$(SEL4_KERNEL)
+	mkdir -p $(@D)
+	cp $< $@
+
+$(ESP_ROOT_D)/EFI/BOOT/BOOTX64.EFI: BOOTX64.EFI
 	mkdir -p $(@D)
 	cp $< $@
 
