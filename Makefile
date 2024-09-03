@@ -16,13 +16,16 @@ SEL4_PROJECT_SRC_D = $(SEL4_D)/projects/myproject/src/
 
 SEL4_PROJECT_FILES = $(shell find $(SEL4_PROJECT_SRC_D) -name "*.*")
 
-.PHONY: all clean run
+.PHONY: all clean run simulate
 
 all: | $(BUILD_D)/disk.img
 
 
 run: $(BUILD_D)/disk.img
 	$(QEMU_BIN) -cpu Nehalem,-vme,-pdpe1gb,-xsave,-xsaveopt,-xsavec,-fsgsbase,-invpcid,+syscall,+lm,enforce -nographic -serial mon:stdio -m size=3G -drive if=pflash,format=raw,readonly=on,file=OVMF_CODE.fd -drive file=build/disk.img
+
+simulate: $(BUILD_D)/disk.img
+	cd $(SEL4_D)/build/ && ./simulate
 
 # Make final image
 $(BUILD_D)/disk.img: $(TEMP_D)/esp.img

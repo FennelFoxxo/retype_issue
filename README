@@ -3,4 +3,5 @@ Please use `git clone --recurse-submodules https://github.com/FennelFoxxo/retype
 Once downloaded, run `make` in the root project folder. The final image will written to build/disk.img
 
 HOW TO USE
-`make run`
+Use `make run` to run as a UEFI image on QEMU
+Use `make simulate` to run the default ./simulate folder in the seL4 build folder
